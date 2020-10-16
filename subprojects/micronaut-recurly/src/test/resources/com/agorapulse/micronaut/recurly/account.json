@@ -1,0 +1,115 @@
+{
+    "id": "account-id",
+    "object": "string",
+    "state": "active",
+    "hosted_login_token": "string",
+    "shipping_addresses": [
+        {
+            "id": "string",
+            "object": "string",
+            "account_id": "string",
+            "nickname": "string",
+            "first_name": "string",
+            "last_name": "string",
+            "company": "string",
+            "email": "string",
+            "vat_number": "string",
+            "phone": "string",
+            "street1": "string",
+            "street2": "string",
+            "city": "string",
+            "region": "string",
+            "postal_code": "string",
+            "country": "string",
+            "created_at": "2020-10-16T08:33:27Z",
+            "updated_at": "2020-10-16T08:33:27Z"
+        }
+    ],
+    "has_live_subscription": true,
+    "has_active_subscription": true,
+    "has_future_subscription": true,
+    "has_canceled_subscription": true,
+    "has_paused_subscription": true,
+    "has_past_due_invoice": true,
+    "created_at": "2020-10-16T08:33:27Z",
+    "updated_at": "2020-10-16T08:33:27Z",
+    "deleted_at": "2020-10-16T08:33:27Z",
+    "code": "string",
+    "username": "string",
+    "email": "user@example.com",
+    "preferred_locale": "da-DK",
+    "cc_emails": "string",
+    "first_name": "string",
+    "last_name": "string",
+    "company": "string",
+    "vat_number": "string",
+    "tax_exempt": true,
+    "exemption_certificate": "string",
+    "parent_account_id": "string",
+    "bill_to": "self",
+    "address": {
+        "first_name": "string",
+        "last_name": "string",
+        "phone": "string",
+        "street1": "string",
+        "street2": "string",
+        "city": "string",
+        "region": "string",
+        "postal_code": "string",
+        "country": "string"
+    },
+    "billing_info": {
+        "id": "string",
+        "object": "string",
+        "account_id": "string",
+        "first_name": "string",
+        "last_name": "string",
+        "company": "string",
+        "address": {
+            "first_name": "string",
+            "last_name": "string",
+            "phone": "string",
+            "street1": "string",
+            "street2": "string",
+            "city": "string",
+            "region": "string",
+            "postal_code": "string",
+            "country": "string"
+        },
+        "vat_number": "string",
+        "valid": true,
+        "payment_method": {
+            "object": "credit_card",
+            "card_type": "American Express",
+            "first_six": "string",
+            "last_four": "stri",
+            "last_two": "st",
+            "exp_month": 0,
+            "exp_year": 0,
+            "gateway_token": "string",
+            "gateway_code": "string",
+            "billing_agreement_id": "string",
+            "name_on_account": "string",
+            "account_type": "checking",
+            "routing_number": "string",
+            "routing_number_bank": "string"
+        },
+        "fraud": {
+            "score": 1,
+            "decision": "approve",
+            "risk_rules_triggered": {}
+        },
+        "created_at": "2020-10-16T08:33:27Z",
+        "updated_at": "2020-10-16T08:33:27Z",
+        "updated_by": {
+            "ip": "string",
+            "country": "st"
+        }
+    },
+    "custom_fields": [
+        {
+            "name": "string",
+            "value": "string"
+        }
+    ]
+}

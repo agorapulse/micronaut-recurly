@@ -2,4 +2,50 @@
 [[_usage]]
 = Usage
 
-Lorem ipsum dolor sit amet
+The only required configuration property is `recurly.api-key`
+
+[source,yml]
+----
+recurly:
+    api-key: recurly_api_key
+----
+
+TIP: You can also specify the key as environment variable `RECURLY_API_KEY`.
+
+Then you can inject `com.recurly.v3.Client` client into your services:
+
+[source,java]
+----
+import com.recurly.v3.Client;
+
+public class MyRecurlyService {
+
+    private final Client recurlyClient;
+
+    public MyRecurlyService(Client recurlyClient) {
+        this.recurlyClient = recurlyClient;
+    }
+
+    // more code here
+
+}
+----
+
+[[_testing]]
+== Testing
+
+You can use `recurly.api-url` configuration property to override server url
+to direct your calls to the mock server. You also need set `RECURLY_UNSAFE`
+environment variable to confirm the change.
+
+[source,groovy]
+----
+include::{root-dir}/subprojects/micronaut-recurly/src/test/groovy/com/agorapulse/micronaut/recurly/RecurlyFactorySpec.groovy[tags=code]
+----
+<1> The easiest way how temporary set enviornment variables is to use System Rules https://stefanbirkner.github.io/system-rules/index.html#EnvironmentVariables[EnviromentVariables] rule
+<2> Setup the mock http://stehno.com/ersatz/[Ersatz Server]
+<3> Use the URL of the mock server as `recurly.api-url` property to direct the calls to it
+<4> Perform the API call using the client
+<5> Verify that the response matches the mock response
+
+

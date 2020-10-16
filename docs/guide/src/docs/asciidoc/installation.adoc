@@ -1,0 +1,16 @@
+[[_installation]]
+= Installation
+
+The library is available in the JCenter repository:
+
+.Gradle Installation
+[source,subs='verbatim,attributes']
+----
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation "com.agorapulse:micronaut-recurly:{project-version}"
+}
+----

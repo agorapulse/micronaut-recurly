@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2020 Vladimir Orany.
+ * Copyright 2020 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 // delete if this subproject should not be published to BinTray
 config {
     bintray {
@@ -24,5 +23,27 @@ config {
 }
 
 dependencies {
-    // add project's dependencies
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    api platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+
+    annotationProcessor 'io.micronaut:micronaut-inject-java'
+    annotationProcessor 'io.micronaut:micronaut-validation'
+
+    api "com.recurly.v3:api-client:$recurlyClientVersion"
+
+    implementation 'io.micronaut:micronaut-inject'
+    implementation 'io.micronaut:micronaut-validation'
+
+    compileOnly "io.micronaut:micronaut-inject-groovy"
+
+    testAnnotationProcessor 'io.micronaut:micronaut-inject-java'
+    testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut.test:micronaut-test-spock"
+    testImplementation "com.stehno.ersatz:ersatz:$ersatzVersion"
+    testImplementation "org.spockframework:spock-core:$spockVersion"
+    testImplementation "com.github.stefanbirkner:system-rules:$systemRulesVersion"
+    testImplementation "org.hamcrest:hamcrest-core:$hamcrestVersion"
+    testImplementation "org.hamcrest:hamcrest-library:$hamcrestVersion"
 }

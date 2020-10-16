@@ -9,4 +9,4 @@ Micronaut Recurly Library
 See [Full Documentation][DOCS]
 
 [DOCS]: https://agorapulse.github.io/micronaut-recurly
-
+****
