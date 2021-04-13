@@ -29,6 +29,12 @@ if (!project.hasProperty('signingKeyId'))       ext.signingKeyId        = System
 if (!project.hasProperty('signingPassword'))    ext.signingPassword     = System.getenv('SIGNING_PASSWORD') ?: '**UNDEFINED**'
 if (!project.hasProperty('signingSecretKey'))   ext.signingSecretKey    = System.getenv('SIGNING_SECRET_KEY') ?: '**UNDEFINED**'
 
+logger.lifecycle "secret key id: '${signingKeyId?.toUpperCase()}'"
+logger.lifecycle "secret key: '${signingSecretKey?.toUpperCase()}'"
+logger.lifecycle "secret password: '${signingPassword?.toUpperCase()}'"
+logger.lifecycle "sonatype username: '${ossrhUsername?.toUpperCase()}'"
+logger.lifecycle "sonatype password: '${ossrhPassword?.toUpperCase()}'"
+
 config {
     release = (rootProject.findProperty('release') ?: false).toBoolean()
 
