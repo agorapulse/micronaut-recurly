@@ -18,9 +18,31 @@ jobs:
     - name: Semantic Version
       id: version
       uses: ncipollo/semantic-version-action@v1
+    - name: Verify Secrets Lenght
+      env:
+        AGORAPULE_BOT_PERSONAL_TOKEN: ${{ secrets.AGORAPULE_BOT_PERSONAL_TOKEN }}
+        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+        SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+        SIGNING_SECRET_KEY: ${{ secrets.SIGNING_SECRET_KEY }}
+      run:
+        echo "{#AGORAPULE_BOT_PERSONAL_TOKEN}"
+        echo "{#SONATYPE_USERNAME}"
+        echo "{#SONATYPE_PASSWORD}"
+        echo "{#SIGNING_KEY_ID}"
+        echo "{#SIGNING_PASSWORD}"
+        echo "{#SIGNING_SECRET_KEY}"
     - uses: eskatos/gradle-command-action@v1
+      env:
+        AGORAPULE_BOT_PERSONAL_TOKEN: ${{ secrets.AGORAPULE_BOT_PERSONAL_TOKEN }}
+        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+        SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+        SIGNING_SECRET_KEY: ${{ secrets.SIGNING_SECRET_KEY }}
       with:
-        arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository -PossrhUsername="${{ secrets.SONATYPE_USERNAME }}" -PossrhPassword="${{ secrets.SONATYPE_PASSWORD }}" -PsigningKeyId="${{ secrets.SIGNING_KEY_ID }}" -PsigningPassword="${{ secrets.SIGNING_PASSWORD }}" -PsigningSecretKey="${{ secrets.SIGNING_SECRET_KEY }}" -Pversion=${{ steps.version.outputs.tag }} -Prelease=true -Dorg.ajoberstar.grgit.auth.username=${{ secrets.AGORAPULE_BOT_PERSONAL_TOKEN }} --stacktrace
+        arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository -PossrhUsername="$SONATYPE_USERNAME" -PossrhPassword="$SONATYPE_PASSWORD" -PsigningKeyId="$SIGNING_KEY_ID" -PsigningPassword="$SIGNING_PASSWORD" -PsigningSecretKey="$SIGNING_SECRET_KEY" -Pversion=${{ steps.version.outputs.tag }} -Prelease=true -Dorg.ajoberstar.grgit.auth.username=${{ secrets.AGORAPULE_BOT_PERSONAL_TOKEN }} --stacktrace
   ping:
     name: Notify Upstream Repositories
     runs-on: ubuntu-latest
@@ -37,7 +59,7 @@ jobs:
       - name: Dispatch to ${{ matrix.repository }}
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.AGORAPULE_BOT_PERSONAL_TOKEN }}
+          token: ${{ secrets.AGORAPULSE_BOT_PERSONAL_TOKEN }}
           repository: ${{ matrix.repository }}
           event-type: ap-new-version-released-event
           client-payload: '{ "group": "com.agorapulse", "module": "micronaut-recurly", "version": "${{ steps.version.outputs.tag }}", "property" : "micronaut.recurly.version", "github" : ${{ toJson(github) }} }'
