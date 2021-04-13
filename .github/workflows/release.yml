@@ -27,12 +27,12 @@ jobs:
         SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         SIGNING_SECRET_KEY: ${{ secrets.SIGNING_SECRET_KEY }}
       run:
-        echo "{#AGORAPULE_BOT_PERSONAL_TOKEN}"
-        echo "{#SONATYPE_USERNAME}"
-        echo "{#SONATYPE_PASSWORD}"
-        echo "{#SIGNING_KEY_ID}"
-        echo "{#SIGNING_PASSWORD}"
-        echo "{#SIGNING_SECRET_KEY}"
+        echo "${#AGORAPULE_BOT_PERSONAL_TOKEN}"
+        echo "${#SONATYPE_USERNAME}"
+        echo "${#SONATYPE_PASSWORD}"
+        echo "${#SIGNING_KEY_ID}"
+        echo "${#SIGNING_PASSWORD}"
+        echo "${#SIGNING_SECRET_KEY}"
     - uses: eskatos/gradle-command-action@v1
       env:
         AGORAPULE_BOT_PERSONAL_TOKEN: ${{ secrets.AGORAPULE_BOT_PERSONAL_TOKEN }}
