@@ -23,11 +23,11 @@ plugins {
     id 'io.github.gradle-nexus.publish-plugin'
 }
 
-if (!project.hasProperty('ossrhUsername'))      ext.ossrhUsername        = '**UNDEFINED**'
+if (!project.hasProperty('ossrhUsername'))      ext.ossrhUsername       = '**UNDEFINED**'
 if (!project.hasProperty('ossrhPassword'))      ext.ossrhPassword       = '**UNDEFINED**'
 if (!project.hasProperty('signingKeyId'))       ext.signingKeyId        = '**UNDEFINED**'
-if (!project.hasProperty('signingSecretKey'))   ext.signingSecretKey    = '**UNDEFINED**'
 if (!project.hasProperty('signingPassword'))    ext.signingPassword     = '**UNDEFINED**'
+if (!project.hasProperty('signingSecretKey'))   ext.signingSecretKey    = System.getenv('SIGNING_SECRET_KEY') ?: '**UNDEFINED**'
 
 config {
     release = (rootProject.findProperty('release') ?: false).toBoolean()
