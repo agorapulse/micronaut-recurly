@@ -26,23 +26,31 @@ jobs:
         SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
         SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         SIGNING_SECRET_KEY: ${{ secrets.SIGNING_SECRET_KEY }}
-      run:
-        echo "${#AGORAPULSE_BOT_PERSONAL_TOKEN}"
-        echo "${#SONATYPE_USERNAME}"
-        echo "${#SONATYPE_PASSWORD}"
-        echo "${#SIGNING_KEY_ID}"
-        echo "${#SIGNING_PASSWORD}"
-        echo "${#SIGNING_SECRET_KEY}"
+      run: |
+        echo "AGORAPULSE_BOT_PERSONAL_TOKEN: ${#AGORAPULSE_BOT_PERSONAL_TOKEN}\n"
+        echo "SONATYPE_USERNAME: ${#SONATYPE_USERNAME}\n"
+        echo "SONATYPE_PASSWORD: ${#SONATYPE_PASSWORD}\n"
+        echo "SIGNING_KEY_ID: ${#SIGNING_KEY_ID}\n"
+        echo "SIGNING_PASSWORD: ${#SIGNING_PASSWORD}\n"
+        echo "SIGNING_SECRET_KEY: ${#SIGNING_SECRET_KEY}\n"
     - uses: eskatos/gradle-command-action@v1
       env:
+        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+        SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         SIGNING_SECRET_KEY: ${{ secrets.SIGNING_SECRET_KEY }}
       with:
-        arguments: publishToMavenLocal -PsigningKeyId="${{ secrets.SIGNING_KEY_ID }}" -PsigningPassword="${{ secrets.SIGNING_PASSWORD }}" -Pversion=${{ steps.version.outputs.tag }} -Prelease=true -Dorg.ajoberstar.grgit.auth.username=${{ secrets.AGORAPULSE_BOT_PERSONAL_TOKEN }} --stacktrace
+        arguments: publishToMavenLocal -Pversion=${{ steps.version.outputs.tag }} -Prelease=true -Dorg.ajoberstar.grgit.auth.username=${{ secrets.AGORAPULSE_BOT_PERSONAL_TOKEN }} --stacktrace
     - uses: eskatos/gradle-command-action@v1
       env:
+        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+        SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         SIGNING_SECRET_KEY: ${{ secrets.SIGNING_SECRET_KEY }}
       with:
-        arguments: gitPublishPush publishToSonatype closeAndReleaseSonatypeStagingRepository -PossrhUsername="${{ secrets.SONATYPE_USERNAME }}" -PossrhPassword="${{ secrets.SONATYPE_PASSWORD }}" -PsigningKeyId="${{ secrets.SIGNING_KEY_ID }}" -PsigningPassword="${{ secrets.SIGNING_PASSWORD }}" -Pversion=${{ steps.version.outputs.tag }} -Prelease=true -Dorg.ajoberstar.grgit.auth.username=${{ secrets.AGORAPULSE_BOT_PERSONAL_TOKEN }} --stacktrace
+        arguments: gitPublishPush publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=${{ steps.version.outputs.tag }} -Prelease=true -Dorg.ajoberstar.grgit.auth.username=${{ secrets.AGORAPULSE_BOT_PERSONAL_TOKEN }} --stacktrace
   ping:
     name: Notify Upstream Repositories
     runs-on: ubuntu-latest
