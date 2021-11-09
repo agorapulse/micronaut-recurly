@@ -23,10 +23,10 @@ import com.recurly.v3.resources.Account
 import com.stehno.ersatz.ContentType
 import com.stehno.ersatz.ErsatzServer
 import io.micronaut.context.ApplicationContext
-import org.junit.Rule
-import org.junit.contrib.java.lang.system.EnvironmentVariables
 import spock.lang.AutoCleanup
 import spock.lang.Specification
+
+import static com.github.stefanbirkner.systemlambda.SystemLambda.*
 
 class RecurlyFactorySpec extends Specification {
 
