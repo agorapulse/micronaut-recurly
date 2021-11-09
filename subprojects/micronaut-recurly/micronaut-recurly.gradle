@@ -36,7 +36,7 @@ dependencies {
     testImplementation "io.micronaut.test:micronaut-test-spock"
     testImplementation "com.stehno.ersatz:ersatz:$ersatzVersion"
     testImplementation "org.spockframework:spock-core:$spockVersion"
-    testImplementation "com.github.stefanbirkner:system-rules:$systemRulesVersion"
+    testImplementation "com.github.stefanbirkner:system-lambda:$systemLambdaVersion"
     testImplementation "org.hamcrest:hamcrest-core:$hamcrestVersion"
     testImplementation "org.hamcrest:hamcrest-library:$hamcrestVersion"
 }
