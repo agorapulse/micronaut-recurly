@@ -42,8 +42,8 @@ environment variable to confirm the change.
 ----
 include::{root-dir}/subprojects/micronaut-recurly/src/test/groovy/com/agorapulse/micronaut/recurly/RecurlyFactorySpec.groovy[tags=code]
 ----
-<1> The easiest way how temporary set enviornment variables is to use System Rules https://stefanbirkner.github.io/system-rules/index.html#EnvironmentVariables[EnviromentVariables] rule
-<2> Setup the mock http://stehno.com/ersatz/[Ersatz Server]
+<1> Setup the mock http://stehno.com/ersatz/[Ersatz Server]
+<2> Alter the environment variable to allow overriding the recurly URL
 <3> Use the URL of the mock server as `recurly.api-url` property to direct the calls to it
 <4> Perform the API call using the client
 <5> Verify that the response matches the mock response

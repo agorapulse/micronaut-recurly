@@ -33,8 +33,6 @@ class RecurlyFactorySpec extends Specification {
     private static final String API_KEY = 'someapikey'
     private static final String ACCOUNT_ID = 'account-id'
 
-    @Rule EnvironmentVariables environmentVariables = new EnvironmentVariables()
-
     @AutoCleanup ApplicationContext context
     @AutoCleanup ErsatzServer server
 
@@ -45,9 +43,7 @@ class RecurlyFactorySpec extends Specification {
             String token = Base64.encoder.encodeToString("$API_KEY:".bytes)
             String accountJson = RecurlyFactorySpec.getResourceAsStream('account.json').text
 
-            environmentVariables.set('RECURLY_INSECURE', Boolean.TRUE.toString())       // <1>
-
-            server = new ErsatzServer({                                                 // <2>
+            server = new ErsatzServer({                                                 // <1>
                 reportToConsole()
             })
 
@@ -60,17 +56,19 @@ class RecurlyFactorySpec extends Specification {
 
             server.start()
 
-            context = ApplicationContext.build(
-                'recurly.api-key': API_KEY,
-                'recurly.api-url': server.httpUrl                                       // <3>
-            ).build()
-
-            context.start()
-
-            recurlyClient = context.getBean(Client)
-
         when:
-            Account account = recurlyClient.getAccount(ACCOUNT_ID)                      // <4>
+            Account account = withEnvironmentVariable('RECURLY_INSECURE', 'true').execute { // <2>
+                context = ApplicationContext.build(
+                    'recurly.api-key': API_KEY,
+                    'recurly.api-url': server.httpUrl                                   // <3>
+                ).build()
+
+                context.start()
+
+                recurlyClient = context.getBean(Client)
+
+                recurlyClient.getAccount(ACCOUNT_ID)                                    // <4>
+            }
 
         then:
             server.verify()
