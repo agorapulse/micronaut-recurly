@@ -17,34 +17,29 @@
  */
 package com.agorapulse.micronaut.recurly;
 
-import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.util.Toggleable;
 
-import javax.annotation.Nullable;
-import javax.validation.constraints.NotBlank;
+/**
+ * Recurly configuration.
+ * <a href="https://recurly.com/">Recurly</a>.
+ */
+public interface RecurlyConfiguration extends Toggleable {
 
-@ConfigurationProperties("recurly")
-public class RecurlyConfiguration {
+    String MEDIA_TYPE = "application/vnd.recurly.v2021-02-25";
 
-    @NotBlank
-    private String apiKey;
+    /**
+     *
+     * @return Recurly API key
+     */
+    @NonNull
+    String getApiKey();
 
+    /**
+     *
+     * @return Recurly URL
+     */
     @Nullable
-    private String apiUrl;
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    @Nullable
-    public String getApiUrl() {
-        return apiUrl;
-    }
-
-    public void setApiUrl(@Nullable String apiUrl) {
-        this.apiUrl = apiUrl;
-    }
+    String getApiUrl();
 }

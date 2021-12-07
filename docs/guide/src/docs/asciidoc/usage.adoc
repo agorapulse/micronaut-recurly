@@ -42,10 +42,9 @@ environment variable to confirm the change.
 ----
 include::{root-dir}/subprojects/micronaut-recurly/src/test/groovy/com/agorapulse/micronaut/recurly/RecurlyFactorySpec.groovy[tags=code]
 ----
-<1> Setup the mock http://stehno.com/ersatz/[Ersatz Server]
-<2> Alter the environment variable to allow overriding the recurly URL
-<3> Use the URL of the mock server as `recurly.api-url` property to direct the calls to it
+<1> Mock Recurly server by using a Micronaut Embedded Server
+<2> Use the URL of the mock server as `recurly.api-url` property to direct the calls to it
 <4> Perform the API call using the client
-<5> Verify that the response matches the mock response
+<5> Verify that recurly server was invoked
 
 

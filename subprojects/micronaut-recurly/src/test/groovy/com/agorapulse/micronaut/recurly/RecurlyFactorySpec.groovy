@@ -20,60 +20,71 @@ package com.agorapulse.micronaut.recurly
 // tag::code[]
 import com.recurly.v3.Client
 import com.recurly.v3.resources.Account
-import com.stehno.ersatz.ContentType
-import com.stehno.ersatz.ErsatzServer
 import io.micronaut.context.ApplicationContext
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Header
+import io.micronaut.http.annotation.Produces
+import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
+import spock.lang.Requires
+import spock.lang.Shared
 import spock.lang.Specification
-
-import static com.github.stefanbirkner.systemlambda.SystemLambda.*
 
 class RecurlyFactorySpec extends Specification {
 
     private static final String API_KEY = 'someapikey'
     private static final String ACCOUNT_ID = 'account-id'
 
-    @AutoCleanup ApplicationContext context
-    @AutoCleanup ErsatzServer server
+    @AutoCleanup
+    @Shared
+    EmbeddedServer recurlyServer = ApplicationContext.run(EmbeddedServer, ["spec.name": "RecurlyFactorySpec"]) as EmbeddedServer // <1>
 
-    Client recurlyClient
-
+    @Requires({env['RECURLY_INSECURE'] == 'true'})
     void 'client is configured'() {
         given:
-            String token = Base64.encoder.encodeToString("$API_KEY:".bytes)
-            String accountJson = RecurlyFactorySpec.getResourceAsStream('account.json').text
+        ApplicationContext ctx = ApplicationContext.run(['recurly.api-key': API_KEY,
+                                                         'recurly.api-url': "http://localhost:$recurlyServer.port"]) // <2>
 
-            server = new ErsatzServer({                                                 // <1>
-                reportToConsole()
-            })
-
-            server.expectations {
-                get '/accounts/' + ACCOUNT_ID, {
-                    header 'Authorization', "Basic $token"
-                    responds().body(accountJson, ContentType.APPLICATION_JSON)
-                }
-            }
-
-            server.start()
+        expect:
+        invocations() == 0
+        ctx.containsBean(Client)
 
         when:
-            Account account = withEnvironmentVariable('RECURLY_INSECURE', 'true').execute { // <2>
-                context = ApplicationContext.build(
-                    'recurly.api-key': API_KEY,
-                    'recurly.api-url': server.httpUrl                                   // <3>
-                ).build()
-
-                context.start()
-
-                recurlyClient = context.getBean(Client)
-
-                recurlyClient.getAccount(ACCOUNT_ID)                                    // <4>
-            }
+        Client recurlyClient = ctx.getBean(Client)
+        Account account = recurlyClient.getAccount(ACCOUNT_ID) // <3>
 
         then:
-            server.verify()
+        account.id == ACCOUNT_ID
+        invocations() == old(invocations()) + 1 // <4>
+    }
 
-            account.id == ACCOUNT_ID                                                    // <5>
+    private int invocations() {
+        recurlyServer.applicationContext.getBean(RecurlyController).authorizedInvocations
+    }
+
+    @io.micronaut.context.annotation.Requires(property = 'spec.name', value = 'RecurlyFactorySpec')
+    @Controller("/accounts")
+    static class RecurlyController {
+        int authorizedInvocations = 0
+        private final String accountJson
+        private final String token
+
+        RecurlyController() {
+            this.accountJson = RecurlyFactorySpec.getResourceAsStream('account.json').text
+            this.token = "Basic " + Base64.encoder.encodeToString("$API_KEY:".bytes)
+        }
+
+        @Produces(RecurlyConfiguration.MEDIA_TYPE)
+        @Get("/account-id")
+        HttpResponse<?> detail(@Header String authorization) {
+            if (authorization != token) {
+                return HttpResponse.unauthorized()
+            }
+            authorizedInvocations++
+            HttpResponse.ok(accountJson)
+        }
     }
 
 }

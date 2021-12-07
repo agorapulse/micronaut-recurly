@@ -34,9 +34,6 @@ dependencies {
     testAnnotationProcessor 'io.micronaut:micronaut-inject-java'
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut.test:micronaut-test-spock"
-    testImplementation "com.stehno.ersatz:ersatz:$ersatzVersion"
     testImplementation "org.spockframework:spock-core:$spockVersion"
-    testImplementation "com.github.stefanbirkner:system-lambda:$systemLambdaVersion"
-    testImplementation "org.hamcrest:hamcrest-core:$hamcrestVersion"
-    testImplementation "org.hamcrest:hamcrest-library:$hamcrestVersion"
+    testImplementation "io.micronaut:micronaut-http-server-netty"
 }

@@ -18,7 +18,6 @@
 plugins {
     id 'org.kordamp.gradle.groovy-project'
     id 'org.kordamp.gradle.checkstyle'
-    id 'org.kordamp.gradle.codenarc'
     id 'org.kordamp.gradle.coveralls'
     id 'io.github.gradle-nexus.publish-plugin'
 }
@@ -31,6 +30,15 @@ if (!project.hasProperty('signingSecretKey'))   ext.signingSecretKey    = System
 
 
 config {
+    docs {
+        groovydoc {
+            enabled = false
+        }
+        javadoc {
+            enabled = false
+        }
+    }
+
     release = (rootProject.findProperty('release') ?: false).toBoolean()
 
     info {
@@ -87,10 +95,6 @@ config {
         checkstyle {
             toolVersion = '8.27'
         }
-
-        codenarc {
-            toolVersion = '1.5'
-        }
     }
 
 }
@@ -106,7 +110,6 @@ nexusPublishing {
 
 allprojects {
     repositories {
-        jcenter()
         mavenCentral()
         maven { url  "https://dl.bintray.com/agorapulse/libs" }
         maven { url "https://repo.spring.io/release"  }
@@ -155,4 +158,4 @@ subprojects { subproject ->
     clean.dependsOn cleanOut
 }
 
-check.dependsOn('aggregateCheckstyle', 'aggregateCodenarc', 'aggregateAllTestReports', 'coveralls')
+check.dependsOn('aggregateCheckstyle', 'aggregateAllTestReports', 'coveralls')

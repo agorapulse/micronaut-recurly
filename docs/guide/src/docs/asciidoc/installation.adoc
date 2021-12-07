@@ -1,13 +1,13 @@
 [[_installation]]
 = Installation
 
-The library is available in the JCenter repository:
+The library is available in the Maven Central repository:
 
 .Gradle Installation
 [source,subs='verbatim,attributes']
 ----
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
