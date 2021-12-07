@@ -30,6 +30,15 @@ if (!project.hasProperty('signingSecretKey'))   ext.signingSecretKey    = System
 
 
 config {
+    docs {
+        groovydoc {
+            enabled = false
+        }
+        javadoc {
+            enabled = false
+        }
+    }
+
     release = (rootProject.findProperty('release') ?: false).toBoolean()
 
     info {
