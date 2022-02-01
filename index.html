@@ -92,7 +92,7 @@ $(addBlockSwitches);
 <h1>Micronaut Recurly Library</h1>
 <div class="details">
 <span id="author" class="author">Vladimir Orany</span><br>
-<span id="revnumber">version 1.0.2</span>
+<span id="revnumber">version 1.1.2-micronaut-3.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -127,11 +127,11 @@ $(addBlockSwitches);
 <div class="title">Gradle Installation</div>
 <div class="content">
 <pre class="prettyprint highlight"><code>repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation "com.agorapulse:micronaut-recurly:1.0.2"
+    implementation "com.agorapulse:micronaut-recurly:1.1.2-micronaut-3.0"
 }</code></pre>
 </div>
 </div>
@@ -195,17 +195,15 @@ import com.recurly.v3.resources.Account
 import com.stehno.ersatz.ContentType
 import com.stehno.ersatz.ErsatzServer
 import io.micronaut.context.ApplicationContext
-import org.junit.Rule
-import org.junit.contrib.java.lang.system.EnvironmentVariables
 import spock.lang.AutoCleanup
 import spock.lang.Specification
+
+import static com.github.stefanbirkner.systemlambda.SystemLambda.*
 
 class RecurlyFactorySpec extends Specification {
 
     private static final String API_KEY = 'someapikey'
     private static final String ACCOUNT_ID = 'account-id'
-
-    @Rule EnvironmentVariables environmentVariables = new EnvironmentVariables()
 
     @AutoCleanup ApplicationContext context
     @AutoCleanup ErsatzServer server
@@ -217,9 +215,7 @@ class RecurlyFactorySpec extends Specification {
             String token = Base64.encoder.encodeToString("$API_KEY:".bytes)
             String accountJson = RecurlyFactorySpec.getResourceAsStream('account.json').text
 
-            environmentVariables.set('RECURLY_INSECURE', Boolean.TRUE.toString())       <i class="conum" data-value="1"></i><b>(1)</b>
-
-            server = new ErsatzServer({                                                 <i class="conum" data-value="2"></i><b>(2)</b>
+            server = new ErsatzServer({                                                 <i class="conum" data-value="1"></i><b>(1)</b>
                 reportToConsole()
             })
 
@@ -232,17 +228,19 @@ class RecurlyFactorySpec extends Specification {
 
             server.start()
 
-            context = ApplicationContext.build(
-                'recurly.api-key': API_KEY,
-                'recurly.api-url': server.httpUrl                                       <i class="conum" data-value="3"></i><b>(3)</b>
-            ).build()
-
-            context.start()
-
-            recurlyClient = context.getBean(Client)
-
         when:
-            Account account = recurlyClient.getAccount(ACCOUNT_ID)                      <i class="conum" data-value="4"></i><b>(4)</b>
+            Account account = withEnvironmentVariable('RECURLY_INSECURE', 'true').execute { <i class="conum" data-value="2"></i><b>(2)</b>
+                context = ApplicationContext.builder(
+                    'recurly.api-key': API_KEY,
+                    'recurly.api-url': server.httpUrl                                   <i class="conum" data-value="3"></i><b>(3)</b>
+                ).build()
+
+                context.start()
+
+                recurlyClient = context.getBean(Client)
+
+                recurlyClient.getAccount(ACCOUNT_ID)                                    <i class="conum" data-value="4"></i><b>(4)</b>
+            }
 
         then:
             server.verify()
@@ -257,11 +255,11 @@ class RecurlyFactorySpec extends Specification {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The easiest way how temporary set enviornment variables is to use System Rules <a href="https://stefanbirkner.github.io/system-rules/index.html#EnvironmentVariables">EnviromentVariables</a> rule</td>
+<td>Setup the mock <a href="http://stehno.com/ersatz/">Ersatz Server</a></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Setup the mock <a href="http://stehno.com/ersatz/">Ersatz Server</a></td>
+<td>Alter the environment variable to allow overriding the recurly URL</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -294,8 +292,8 @@ class RecurlyFactorySpec extends Specification {
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.2<br>
-Last updated 2021-04-14 03:56:05 UTC
+Version 1.1.2-micronaut-3.0<br>
+Last updated 2022-02-01 11:17:49 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
