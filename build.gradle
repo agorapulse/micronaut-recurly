@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2021 Agorapulse.
+ * Copyright 2020-2022 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -108,9 +108,7 @@ nexusPublishing {
 
 allprojects {
     repositories {
-        jcenter()
         mavenCentral()
-        maven { url  "https://dl.bintray.com/agorapulse/libs" }
         maven { url "https://repo.spring.io/release"  }
     }
 
@@ -125,6 +123,7 @@ subprojects { subproject ->
 
     apply plugin: 'java-library'
     apply plugin: 'groovy'
+    apply plugin: 'micronaut-compatibility'
 
     dependencies {
         // add your global dependencies

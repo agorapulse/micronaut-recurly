@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2021 Agorapulse.
+ * Copyright 2020-2022 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ class RecurlyFactorySpec extends Specification {
 
         when:
             Account account = withEnvironmentVariable('RECURLY_INSECURE', 'true').execute { // <2>
-                context = ApplicationContext.build(
+                context = ApplicationContext.builder(
                     'recurly.api-key': API_KEY,
                     'recurly.api-url': server.httpUrl                                   // <3>
                 ).build()

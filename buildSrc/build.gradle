@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2020-2022 Agorapulse.
+ * Copyright 2022-2022 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,38 +16,19 @@
  * limitations under the License.
  */
 plugins {
-    id 'org.kordamp.gradle.guide'
-    id 'org.ajoberstar.git-publish'
+    id 'groovy-gradle-plugin'
+    id 'groovy'
 }
 
-config {
-    docs {
-        guide {
-            publish {
-                enabled = true
-            }
-        }
-    }
-}
-
-configurations {
-    asciidoctorExtensions
+repositories {
+    mavenCentral()
+    maven { url 'https://plugins.gradle.org/m2/' }
 }
 
 dependencies {
-    asciidoctorExtensions 'com.bmuschko:asciidoctorj-tabbed-code-extension:0.3'
-}
+    compile gradleApi()
+    compile localGroovy()
 
-asciidoctor {
-    configurations 'asciidoctorExtensions'
-
-    baseDirFollowsSourceDir()
-
-    attributes = [
-        'gradle-version': project.gradle.gradleVersion,
-        'source-highlighter': 'prettify',
-        'root-dir': rootDir,
-        'project-slug': slug
-    ]
-
+    compile 'io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE'
+    compile 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
 }
