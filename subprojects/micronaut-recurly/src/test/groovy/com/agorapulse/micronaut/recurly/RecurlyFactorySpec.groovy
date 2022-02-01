@@ -58,7 +58,7 @@ class RecurlyFactorySpec extends Specification {
 
         when:
             Account account = withEnvironmentVariable('RECURLY_INSECURE', 'true').execute { // <2>
-                context = ApplicationContext.build(
+                context = ApplicationContext.builder(
                     'recurly.api-key': API_KEY,
                     'recurly.api-url': server.httpUrl                                   // <3>
                 ).build()
