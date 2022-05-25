@@ -2,4 +2,4 @@
 [[_introduction]]
 = Introduction
 
-Micronaut Recurly library provides configuration for https://github.com/recurly/recurly-client-java[Recurly Java Client].
+Micronaut Recurly provides configuration for https://github.com/recurly/recurly-client-java[Recurly Java Client].

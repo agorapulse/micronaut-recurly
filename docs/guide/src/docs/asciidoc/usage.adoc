@@ -7,22 +7,24 @@ The only required configuration property is `recurly.api-key`
 [source,yml]
 ----
 recurly:
-    api-key: recurly_api_key
+  api-key: recurly_api_key
 ----
 
-TIP: You can also specify the key as environment variable `RECURLY_API_KEY`.
+TIP: You can also specify the key as the `RECURLY_API_KEY` environment variable.
 
 Then you can inject `com.recurly.v3.Client` client into your services:
 
 [source,java]
 ----
 import com.recurly.v3.Client;
+import javax.inject.Singleton;
 
+@Singleton
 public class MyRecurlyService {
 
     private final Client recurlyClient;
 
-    public MyRecurlyService(Client recurlyClient) {
+    MyRecurlyService(Client recurlyClient) {
         this.recurlyClient = recurlyClient;
     }
 
@@ -34,8 +36,8 @@ public class MyRecurlyService {
 [[_testing]]
 == Testing
 
-You can use `recurly.api-url` configuration property to override server url
-to direct your calls to the mock server. You also need set `RECURLY_UNSAFE`
+You can use the `recurly.api-url` configuration property to override the server URL
+to direct your calls to a mock server. You must also set the `RECURLY_UNSAFE`
 environment variable to confirm the change.
 
 [source,groovy]
@@ -47,5 +49,3 @@ include::{root-dir}/subprojects/micronaut-recurly/src/test/groovy/com/agorapulse
 <3> Use the URL of the mock server as `recurly.api-url` property to direct the calls to it
 <4> Perform the API call using the client
 <5> Verify that the response matches the mock response
-
-
