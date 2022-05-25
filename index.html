@@ -113,7 +113,7 @@ $(addBlockSwitches);
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Micronaut Recurly library provides configuration for <a href="https://github.com/recurly/recurly-client-java">Recurly Java Client</a>.</p>
+<p>Micronaut Recurly provides configuration for <a href="https://github.com/recurly/recurly-client-java">Recurly Java Client</a>.</p>
 </div>
 </div>
 </div>
@@ -121,7 +121,7 @@ $(addBlockSwitches);
 <h2 id="_installation"><a class="anchor" href="#_installation"></a>2. Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The library is available in the JCenter repository:</p>
+<p>The library is available in Maven Central:</p>
 </div>
 <div class="listingblock">
 <div class="title">Gradle Installation</div>
@@ -146,7 +146,7 @@ dependencies {
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="yml">recurly:
-    api-key: recurly_api_key</code></pre>
+  api-key: recurly_api_key</code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -156,7 +156,7 @@ dependencies {
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-You can also specify the key as environment variable <code>RECURLY_API_KEY</code>.
+You can also specify the key as the <code>RECURLY_API_KEY</code> environment variable.
 </td>
 </tr>
 </table>
@@ -167,12 +167,14 @@ You can also specify the key as environment variable <code>RECURLY_API_KEY</code
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">import com.recurly.v3.Client;
+import javax.inject.Singleton;
 
+@Singleton
 public class MyRecurlyService {
 
     private final Client recurlyClient;
 
-    public MyRecurlyService(Client recurlyClient) {
+    MyRecurlyService(Client recurlyClient) {
         this.recurlyClient = recurlyClient;
     }
 
@@ -184,8 +186,8 @@ public class MyRecurlyService {
 <div class="sect2">
 <h3 id="_testing"><a class="anchor" href="#_testing"></a>3.1. Testing</h3>
 <div class="paragraph">
-<p>You can use <code>recurly.api-url</code> configuration property to override server url
-to direct your calls to the mock server. You also need set <code>RECURLY_UNSAFE</code>
+<p>You can use the <code>recurly.api-url</code> configuration property to override the server URL
+to direct your calls to a mock server. You must also set the <code>RECURLY_UNSAFE</code>
 environment variable to confirm the change.</p>
 </div>
 <div class="listingblock">
@@ -293,7 +295,7 @@ class RecurlyFactorySpec extends Specification {
 <div id="footer">
 <div id="footer-text">
 Version 1.1.2-micronaut-3.0<br>
-Last updated 2022-02-01 11:17:49 UTC
+Last updated 2022-05-25 06:53:11 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
